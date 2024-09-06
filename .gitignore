@@ -30,6 +30,8 @@ npm-debug.log.*
 
 .env
 
+.vscode
+
 #google token
 src/main/Utils/json
 
