@@ -207,7 +207,7 @@
       "target": [
         "nsis"
       ],
-      "artifactName": "${productName}-v${version}-${os}.${ext}"
+      "artifactName": "${productName}-SetUp-v${version}.${ext}"
     },
     "linux": {
       "target": [
