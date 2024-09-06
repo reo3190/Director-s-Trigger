@@ -1,0 +1,36 @@
+@import './_color';
+
+*{
+  &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+      height: 9px;
+      border: 2px solid rgba(0, 0, 0, 0);
+      background-clip: padding-box;
+      border-radius: 7px;
+      background-color: rgba(196, 196, 196, 0.6);
+      box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+  }
+  &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+      display: none;
+  }
+  &::-webkit-scrollbar-corner {
+      background-color: transparent;
+  }
+}
+
+.button-blue{
+  border: none;
+  border-radius: 2px;
+  background: var(--button-bg);
+  color: var(--white);
+
+  &:hover{
+    background: var(--button-bg-hover);
+    color: var(--white);
+  }
+}

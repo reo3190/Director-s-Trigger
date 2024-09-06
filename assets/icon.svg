@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_8" data-name="レイヤー 8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242.55 242.55">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #00548c;
+      }
+
+      .cls-1, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        stroke: #040000;
+        stroke-miterlimit: 10;
+        stroke-width: 5px;
+      }
+
+      .cls-3 {
+        fill: #a9dcf1;
+      }
+
+      .cls-4 {
+        fill: #b5b5b5;
+      }
+
+      .cls-5 {
+        fill: #939393;
+      }
+
+      .cls-6 {
+        fill: #1181c0;
+      }
+
+      .cls-7 {
+        fill: #676868;
+      }
+
+      .cls-8 {
+        fill: #116e9c;
+      }
+    </style>
+  </defs>
+  <ellipse class="cls-7" cx="121.27" cy="177" rx="119.56" ry="65.55"/>
+  <polygon class="cls-7" points="240.54 181.62 2 181.62 0 108.78 242.55 108.78 240.54 181.62"/>
+  <ellipse class="cls-4" cx="121.27" cy="114.61" rx="121.27" ry="66.48"/>
+  <ellipse class="cls-5" cx="121.27" cy="110.52" rx="121.27" ry="66.48"/>
+  <ellipse class="cls-2" cx="124.23" cy="100.21" rx="79.29" ry="43.47"/>
+  <polygon class="cls-1" points="201.1 100.21 47.42 100.21 46.21 60.58 202.31 60.58 201.1 100.21"/>
+  <ellipse class="cls-3" cx="124.67" cy="63.28" rx="78.05" ry="42.78"/>
+  <ellipse class="cls-6" cx="124.26" cy="60.58" rx="78.05" ry="42.79"/>
+  <polygon class="cls-1" points="95.03 83.38 66.03 58.8 77.68 54.88 96.78 70.37 172.43 38.77 183.31 44.99 95.03 83.38"/>
+  <polygon class="cls-8" points="96.78 73.85 77.68 58.36 68.97 61.29 95.03 83.38 179.85 46.49 172.43 42.25 96.78 73.85"/>
+</svg>

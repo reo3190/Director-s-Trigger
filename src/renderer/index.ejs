@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[SBL] Director's Trigger</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    .titlebar {
+      -webkit-app-region: drag;
+      background-color: #003459;
+      color: white;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      position: relative;
+      z-index: 100;
+    }
+    .titlebar .controls {
+      -webkit-app-region: no-drag;
+    }
+    .titlebar button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .titlebar button:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="titlebar">
+    <div class="title">[SBL] Director's Trigger</div>
+    <div class="controls">
+      <button onclick="window.electron.minimize()">_</button>
+      <button onclick="window.electron.close()">X</button>
+    </div>
+  </div>
+  <div id="root"></div>
+</body>
+</html>
+

@@ -1,0 +1,23 @@
+{
+  "name": "Director-s-Trigger",
+  "version": "0.0.1",
+  "repository": "https://github.com/reo3190/Director-s-Trigger",
+  "publish":{
+    "provider": "github",
+    "releaseType": "release"
+  },
+  "description": "SBL Directors torigger.Push status to Spreadsheet, and Send chat to Chatwork group.",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "SBL"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+
+  
+  "dependencies": {}
+}
