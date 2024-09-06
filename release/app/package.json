@@ -1,12 +1,12 @@
 {
   "name": "Director-s-Trigger",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "repository": "https://github.com/reo3190/Director-s-Trigger",
   "publish":{
     "provider": "github",
     "releaseType": "release"
   },
-  "description": "SBL Directors trigger. Push status to Spreadsheet, and Send chat to Chatwork group.",
+  "description": "SBL Directors torigger.Push status to Spreadsheet, and Send chat to Chatwork group.",
   "license": "UNLICENSED",
   "author": {
     "name": "SBL"
