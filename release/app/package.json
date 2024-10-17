@@ -1,8 +1,8 @@
 {
   "name": "Director-s-Trigger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "https://github.com/reo3190/Director-s-Trigger",
-  "publish":{
+  "publish": {
     "provider": "github",
     "releaseType": "release"
   },
@@ -17,7 +17,5 @@
     "postinstall": "npm run rebuild && npm run link-modules",
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
   },
-
-  
   "dependencies": {}
 }

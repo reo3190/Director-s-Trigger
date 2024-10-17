@@ -129,3 +129,24 @@ export const getProjectsFromGS = async () => {
     return [{ error: 'getProjectsFromGS error:' + error }];
   }
 };
+
+export const getFormatFromGS = async (project: string) => {
+  try {
+    const oAuth2Client = getOAuth2Client();
+    const sheets = google.sheets({ version: 'v4' });
+    const param = {
+      spreadsheetId: SHEET_ID,
+      range: project + '!A4',
+      auth: oAuth2Client,
+    };
+
+    let response = await sheets.spreadsheets.values.get(param);
+    const data = response.data.values;
+    if (!data || data.length === 0)
+      return { error: 'getFormatFromGS cant get format' };
+
+    return data[0][0];
+  } catch (error) {
+    return { error: 'getFormatFromGS error:' + error };
+  }
+};

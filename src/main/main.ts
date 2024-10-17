@@ -23,7 +23,12 @@ import {
   addUserToDB,
 } from './Utils/dbUtil';
 import { resolveHtmlPath } from './Utils/util';
-import { addData, getData, getProjectsFromGS } from './Utils/gsUtil';
+import {
+  addData,
+  getData,
+  getFormatFromGS,
+  getProjectsFromGS,
+} from './Utils/gsUtil';
 // import Store from 'electron-store';
 import axios from 'axios';
 import { sendChat } from './Utils/chatUtil';
@@ -341,26 +346,92 @@ ipcMain.handle('get-in-folder', async (event, filepath, id) => {
 
 //-------------------------------------------------------------------------------------
 
+interface FileState {
+  scene: string;
+  cut: string;
+  take: string;
+  process: string;
+}
+
+interface Format {
+  scene: string[];
+  cut: string;
+  take: string;
+  process: string;
+  format: string[];
+  [key: string]: any;
+}
+
 const filesMap = async (
   project: string,
   e: FileData[],
   res: Record<string, any>[],
+  format: Format,
 ) => {
   let message = '';
+
   await Promise.all(
     e.map(async (f: FileData) => {
       const name = path.parse(f.name).name;
-      const parts = name.split('_');
-      const numberPart = parts[2].match(/\d+/)?.[0] || '';
-      const numberEdit = parseInt(numberPart, 10);
-      const letterPart = parts[2].match(/[a-zA-Z]+/)?.[0] || '';
-      const id = parts[1] + '_' + numberEdit + letterPart;
+      // const parts = name.split('_');
+      // const numberPart = parts[2].match(/\d+/)?.[0] || '';
+      // const numberEdit = parseInt(numberPart, 10);
+      // const letterPart = parts[2].match(/[a-zA-Z]+/)?.[0] || '';
+      // const id = parts[1] + '_' + numberEdit + letterPart;
 
-      let success = false;
+      //
+      //
+      //
+
+      const info: FileState = { scene: '', cut: '', take: '', process: '' };
+      let replacedName = name;
+
+      const sceneList = format.scene;
+      const isSceneList = sceneList && sceneList.length > 0;
+
+      if (isSceneList) {
+        sceneList.map((s) => {
+          const reg = new RegExp(s);
+          if (reg.test(replacedName)) {
+            info.scene = s;
+            replacedName = replacedName.replace(s, '*Scene*');
+          }
+        });
+      }
+
+      const replacedNameParts = replacedName.split('_');
+
+      format.format.map((f, i) => {
+        switch (f) {
+          case 'scene':
+            if (!isSceneList) {
+              info[f] = replacedNameParts[i];
+            }
+            break;
+          case 'cut':
+          case 'take':
+            const regCut = new RegExp(`^${format[f]}(\\d+[A-Za-z]*)$`);
+            const match = replacedNameParts[i].match(regCut);
+            if (match) {
+              let numPart = parseInt(match[1], 10);
+              let textPart = match[1].replace(/[0-9]/g, '');
+              let result = numPart + textPart;
+              info[f] = result;
+            }
+            break;
+          case 'process':
+            info[f] = replacedNameParts[i];
+            break;
+        }
+      });
+
+      const _id = info.scene + '_' + info.cut;
+      let _success = false;
+
       for (let i = 0; i < res.length; i++) {
         const obj = res[i];
 
-        if (obj['id'] === id) {
+        if (obj['id'].toLowerCase() === _id.toLowerCase()) {
           const value =
             f.tag[0] === '_ok'
               ? 'OK'
@@ -368,34 +439,74 @@ const filesMap = async (
                 ? 'リテイク'
                 : '作業中';
           const keys = Object.keys(obj);
-          const position = keys.indexOf(parts[4]) + 1;
+          const position = keys.indexOf(info.process) + 1;
           const col = String.fromCharCode(64 + position);
           const range = `${col}${i + 2}`;
 
-          if (obj[parts[4]] !== value) {
+          if (obj[info.process] !== value) {
             const res1 = await addData(project, range, value);
             if (res1.message) {
-              success = true;
+              _success = true;
             }
           } else {
-            success = true;
+            _success = true;
           }
 
-          if (parts[3].startsWith('M')) {
-            const takeNum = parts[3].match(/\d+/)?.[0];
-            const value2 = 't' + takeNum;
-            const position2 = keys.indexOf(parts[4] + '_t') + 1;
-            const col2 = String.fromCharCode(64 + position2);
-            const range2 = `${col2}${i + 2}`;
+          const takeNum = info.take;
+          const value2 = 't' + takeNum;
+          const position2 = keys.indexOf(info.process + '_t') + 1;
+          const col2 = String.fromCharCode(64 + position2);
+          const range2 = `${col2}${i + 2}`;
 
-            if (obj[parts[4] + '_t'] !== value2) {
-              const res2 = await addData(project, range2, value2);
-            }
+          if (obj[info.process + '_t'] !== value2) {
+            const res2 = await addData(project, range2, value2);
           }
         }
       }
+      //
+      //
+      //
 
-      if (!success && f.new) {
+      // let success = false;
+      // for (let i = 0; i < res.length; i++) {
+      //   const obj = res[i];
+
+      //   if (obj['id'] === id) {
+      //     const value =
+      //       f.tag[0] === '_ok'
+      //         ? 'OK'
+      //         : f.tag[0] === '_r'
+      //           ? 'リテイク'
+      //           : '作業中';
+      //     const keys = Object.keys(obj);
+      //     const position = keys.indexOf(parts[4]) + 1;
+      //     const col = String.fromCharCode(64 + position);
+      //     const range = `${col}${i + 2}`;
+
+      //     if (obj[parts[4]] !== value) {
+      //       const res1 = await addData(project, range, value);
+      //       if (res1.message) {
+      //         success = true;
+      //       }
+      //     } else {
+      //       success = true;
+      //     }
+
+      //     if (parts[3].startsWith('M')) {
+      //       const takeNum = parts[3].match(/\d+/)?.[0];
+      //       const value2 = 't' + takeNum;
+      //       const position2 = keys.indexOf(parts[4] + '_t') + 1;
+      //       const col2 = String.fromCharCode(64 + position2);
+      //       const range2 = `${col2}${i + 2}`;
+
+      //       if (obj[parts[4] + '_t'] !== value2) {
+      //         const res2 = await addData(project, range2, value2);
+      //       }
+      //     }
+      //   }
+      // }
+
+      if (!_success && f.new) {
         message += `${f.name}, `;
       }
     }),
@@ -411,9 +522,12 @@ const setGS = async (project: string, files: FileData[]) => {
     const filesNo = files.filter(
       (f: FileData) => f.tag[0] !== '_ok' && f.tag[0] !== '_r',
     );
-    const res1 = await filesMap(project, filesNo, res);
-    const res2 = await filesMap(project, filesRe, res);
-    const res3 = await filesMap(project, filesOk, res);
+    const formatStr = await getFormatFromGS(project);
+    const format = JSON.parse(formatStr);
+
+    const res1 = await filesMap(project, filesNo, res, format);
+    const res2 = await filesMap(project, filesRe, res, format);
+    const res3 = await filesMap(project, filesOk, res, format);
     const result = res1 + res2 + res3;
 
     return result;
